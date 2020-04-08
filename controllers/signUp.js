@@ -1,4 +1,4 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
@@ -8,14 +8,12 @@ const nodemailer = require("nodemailer");
 const TOKE = "asdf1093KMnzxcvnkljvasdu09123nlasdasdf";
 
 exports.createUser = (req, res, next) => {
-    GMAIL_USER = "wisesocio";
-    GMAIL_PASS = "Singh@123";
 
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user: GMAIL_USER,
-            pass: GMAIL_PASS,
+            user: process.env.GMAIL_USER,
+            pass: process.env.GMAIL_PASS,
         },
     });
 
