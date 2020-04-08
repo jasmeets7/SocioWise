@@ -1,10 +1,11 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
 const Student = require("../models/students");
 const Professor = require("../models/professor");
 const EventManager = require("../models/event-manager");
+const Admin = require("../models/admin");
 
 exports.userLogIn = (req, res, next) => {
     let fetchedUser;
@@ -15,6 +16,10 @@ exports.userLogIn = (req, res, next) => {
         if (!user) {
                 return res.status(401).json({
                 message: "Incorrect E-Mail or Password"
+            });
+        } else if (!user.active) {
+                return res.status(401).json({
+                message: "You need to Verify your Email"
             });
         }
         fetchedUser = user;
@@ -29,10 +34,17 @@ exports.userLogIn = (req, res, next) => {
             let isProfessor =  await Professor.exists({_id: fetchedUser._id});
             if (!isProfessor) {
                 let isEventManager =  await EventManager.exists({_id: fetchedUser._id});
-                if (isEventManager) {
-                    let eventManagerObj =  await EventManager.findOne({_id: fetchedUser._id});
-                    userType = "Event Manager";
-                    userObj = eventManagerObj;
+                if (!isEventManager) {
+                    let isAdmin =  await Admin.exists({_id: fetchedUser._id});
+                    if (isAdmin) {
+                        let adminObj =  await Admin.findOne({_id: fetchedUser._id});
+                        userType = "Admin";
+                        userObj = adminObj;
+                    }
+                }else{
+                let eventManagerObj =  await EventManager.findOne({_id: fetchedUser._id});
+                userType = "Event Manager";
+                userObj = eventManagerObj;
                 }
             } else{
                 let professorObj =  await Professor.findOne({_id: fetchedUser._id});
