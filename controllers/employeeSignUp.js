@@ -47,7 +47,7 @@ exports.createEventManager = (req, res, next) => {
                     expiresIn: '1d',
                 },
                 (err, emailToken) => {
-                    const url = `https://sociowise.herokuapp.com/auth/confirmation/${emailToken}`;
+                    const url = `http://localhost:4200/auth/confirmation/${emailToken}`;
         
                     transporter.sendMail({
                     to: result.email,
@@ -105,7 +105,7 @@ exports.createProfessor = (req, res, next) => {
                     expiresIn: '1d',
                 },
                 (err, emailToken) => {
-                    const url = `https://sociowise.herokuapp.com/auth/confirmation/${emailToken}`;
+                    const url = `http://localhost:4200/auth/confirmation/${emailToken}`;
         
                     transporter.sendMail({
                     to: result.email,
