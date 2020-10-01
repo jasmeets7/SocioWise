@@ -1,14 +1,7 @@
 {
   "name": "socio-wise",
   "version": "1.0.0",
-  "description": "",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "author": "Jasmeet Singh",
-  "license": "ISC",
+  "private":"true",
   "dependencies": {
     "bcrypt": "^5.0.0",
     "googleapis": "^60.0.1",
@@ -16,8 +9,5 @@
     "mongoose": "^5.10.6",
     "mongoose-unique-validator": "^2.0.3",
     "nodemailer": "^6.4.11"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.4"
   }
 }
