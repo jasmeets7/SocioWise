@@ -5,6 +5,10 @@
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+    "node": "12.6.0",
+    "npm": "6.9.0"
+  },
   "dependencies": {
     "bcrypt": "^5.0.0",
     "googleapis": "^60.0.1",
