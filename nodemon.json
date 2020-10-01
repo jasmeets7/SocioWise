@@ -4,6 +4,8 @@
       "JWT_KEY": "aslkdjlkaj10830912039jlkoaiuwerasdjflkasd",
       "EMAIL_SECRET" : "asdf1093KMnzxcvnkljvasdu09123nlasdasdf",
       "GMAIL_USER": "wisesocio",
-      "GMAIL_PASS": "Singh@123"
+      "CLIENTID": "69237811103-dsehi8ke1bqdfroe7fr7phvkei9bfq0s.apps.googleusercontent.com",
+      "CLIENTSECRET": "m2pwD7GCREmhA1lrGvgDUrRU",
+      "REFRESHTOKEN": "1//04LxVqrmRivG7CgYIARAAGAQSNwF-L9Ir47wPLJp_bGlF89c7DEu1Doq1uEgixd6NZgwN9Koq_vxtFap5JqsUMdeaIFJ89RcY4t0"
     }
 }

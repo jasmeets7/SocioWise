@@ -11,12 +11,12 @@ const OAuth2 = google.auth.OAuth2;
 exports.createUser = (req, res, next) => {
 
     const myOAuth2Client = new OAuth2(
-        "69237811103-dsehi8ke1bqdfroe7fr7phvkei9bfq0s.apps.googleusercontent.com",
-        "m2pwD7GCREmhA1lrGvgDUrRU",
+        process.env.CLIENTID,
+        process.env.CLIENTSECRET,
     );
 
     myOAuth2Client.setCredentials({
-        refresh_token:"1//04LxVqrmRivG7CgYIARAAGAQSNwF-L9Ir47wPLJp_bGlF89c7DEu1Doq1uEgixd6NZgwN9Koq_vxtFap5JqsUMdeaIFJ89RcY4t0"
+        refresh_token: process.env.REFRESHTOKEN
     });
 
     const myAccessToken = myOAuth2Client.getAccessToken();
@@ -26,9 +26,9 @@ exports.createUser = (req, res, next) => {
         auth: {
              type: "OAuth2",
              user: "wisesocio@gmail.com",
-             clientId: "69237811103-dsehi8ke1bqdfroe7fr7phvkei9bfq0s.apps.googleusercontent.com",
-             clientSecret: "m2pwD7GCREmhA1lrGvgDUrRU",
-             refreshToken: "1//04LxVqrmRivG7CgYIARAAGAQSNwF-L9Ir47wPLJp_bGlF89c7DEu1Doq1uEgixd6NZgwN9Koq_vxtFap5JqsUMdeaIFJ89RcY4t0",
+             clientId: process.env.CLIENTID,
+             clientSecret: process.env.CLIENTSECRET,
+             refreshToken: process.env.REFRESHTOKEN,
              accessToken: myAccessToken
         }});
 
@@ -56,7 +56,7 @@ exports.createUser = (req, res, next) => {
                 {
                     user: userDels,
                 },
-                "asdf1093KMnzxcvnkljvasdu09123nlasdasdf",
+                process.env.EMAIL_SECRET,
                 {
                     expiresIn: '1d',
                 },
