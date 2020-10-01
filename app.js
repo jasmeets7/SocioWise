@@ -9,7 +9,9 @@ const app = express();
 
 mongoose
   .connect(
-    "mongodb+srv://dbSocioWise:PQwe0VveydwWf8NY@cluster0-fv5sj.gcp.mongodb.net/LogIn"
+    "mongodb+srv://dbSocioWise:" +
+    process.env.MONGO_ATLAS_PW +
+    "@cluster0-fv5sj.gcp.mongodb.net/LogIn"
   )
   .then(() => {
     console.log("Connected to database!");
