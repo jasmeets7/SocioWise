@@ -1,0 +1,9 @@
+{
+    "env": {
+      "MONGO_ATLAS_PW": "PQwe0VveydwWf8NY",
+      "JWT_KEY": "aslkdjlkaj10830912039jlkoaiuwerasdjflkasd",
+      "EMAIL_SECRET" : "asdf1093KMnzxcvnkljvasdu09123nlasdasdf",
+      "GMAIL_USER": "wisesocio",
+      "GMAIL_PASS": "Singh@123"
+    }
+}
