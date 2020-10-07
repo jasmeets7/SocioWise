@@ -2,10 +2,18 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const User = require("../models/user");
+const Student = require("../models/student");
 
 exports.userLogIn = (req, res, next) => {
+
+    const url = req.protocol + "://" + req.get("host");
+    let imagePath = url + "/images/default.png";
+
     let fetchedUser;
     let userType;
+
+    let studentData;
+
     User.findOne({ email: req.body.email })
     .then(user => {
         if (!user) {
@@ -19,7 +27,7 @@ exports.userLogIn = (req, res, next) => {
         }
         fetchedUser = user;
         return bcrypt.compare(req.body.password, user.password);
-    }).then(result => {
+    }).then(async result => {
         if (!result) {
             return res.status(401).json({ message: "Incorrect E-Mail or Password"});
         }
@@ -30,6 +38,7 @@ exports.userLogIn = (req, res, next) => {
                 break;
             case "1":
                 userType = "990196";
+                studentData = await Student.findOne({ _id : fetchedUser._id });
                 break;
             case "2":
                 userType = "426634";
@@ -42,6 +51,12 @@ exports.userLogIn = (req, res, next) => {
                 break;
         }
 
+        if (fetchedUser.imagePath === "") {
+            fetchedUser.imagePath = imagePath;
+        } else {
+            fetchedUser.imagePath = url + fetchedUser.imagePath;
+        }
+
         const userDetails = {
             id: fetchedUser._id,
             firstName : fetchedUser.firstName,
@@ -49,7 +64,14 @@ exports.userLogIn = (req, res, next) => {
             email : fetchedUser.email,
             collegeID : fetchedUser.collegeID,
             active: fetchedUser.active,
-            uTV: userType
+            uTV: userType,
+            imagePath: fetchedUser.imagePath,
+            personalInfo: {
+                phoneNumber: fetchedUser.personalInfo.phoneNumber,
+                nativeLanguage: fetchedUser.personalInfo.nativeLanguage,
+                secondLanguage:  fetchedUser.personalInfo.secondLanguage
+            },
+            studentData: studentData
         }
 
         const token = jwt.sign(

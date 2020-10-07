@@ -8,6 +8,8 @@ const userSchema = mongoose.Schema({
   password: { type: String, required: true },
   collegeId: { type: String, required: true },
   userType: { type: String, required: true },
+  imagePath: {type: String, required: true },
+  personalInfo: {type: Object},
   active: {type: Boolean, default:false}
 });
 

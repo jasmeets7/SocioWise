@@ -12,6 +12,9 @@ const OAuth2 = google.auth.OAuth2;
 
 exports.createEventManager = (req, res, next) => {
 
+    const url = req.protocol + "://" + req.get("host");
+    let imagePath = "/images/default.png";
+
     const myOAuth2Client = new OAuth2(
         process.env.CLIENTID,
         process.env.CLIENTSECRET,
@@ -41,6 +44,12 @@ exports.createEventManager = (req, res, next) => {
             email: req.body.email,
             password: hash,
             collegeId: req.body.collegeId,
+            imagePath: imagePath,
+            personalInfo: {
+                phoneNumber: "",
+                nativeLanguage: "",
+                secondLanguage: ""
+            },
             userType: "3"
         });
         user.save().then(async result => {
@@ -62,7 +71,7 @@ exports.createEventManager = (req, res, next) => {
                     expiresIn: '1d',
                 },
                 (err, emailToken) => {
-                    const url = `https://sociowise.herokuapp.com/auth/confirmation/${emailToken}`;
+                    const url = process.env.CONFIRM_URL + `/${emailToken}`;
         
                     transporter.sendMail({
                     to: result.email,
@@ -82,6 +91,9 @@ exports.createEventManager = (req, res, next) => {
 }
 
 exports.createProfessor = (req, res, next) => {
+
+    const url = req.protocol + "://" + req.get("host");
+    let imagePath = "/images/default.png";
 
     const myOAuth2Client = new OAuth2(
         process.env.CLIENTID,
@@ -112,6 +124,12 @@ exports.createProfessor = (req, res, next) => {
             email: req.body.email,
             password: hash,
             collegeId: req.body.collegeId,
+            imagePath: imagePath,
+            personalInfo: {
+                phoneNumber: "",
+                nativeLanguage: "",
+                secondLanguage: ""
+            },
             userType: "2"
         });
         user.save().then(async result => {
@@ -133,7 +151,7 @@ exports.createProfessor = (req, res, next) => {
                     expiresIn: '1d',
                 },
                 (err, emailToken) => {
-                    const url = `https://sociowise.herokuapp.com/auth/confirmation/${emailToken}`;
+                    const url = process.env.CONFIRM_URL + `/${emailToken}`;
         
                     transporter.sendMail({
                     to: result.email,
