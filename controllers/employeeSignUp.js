@@ -12,7 +12,7 @@ const OAuth2 = google.auth.OAuth2;
 
 exports.createEventManager = (req, res, next) => {
 
-    const url = req.protocol + "://" + req.get("host");
+    const url = "https://" + req.get("host");
     let imagePath = "/images/default.png";
 
     const myOAuth2Client = new OAuth2(

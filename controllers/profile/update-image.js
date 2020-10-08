@@ -29,7 +29,7 @@ const MIME_TYPE_MAP = {
 
 exports.updateImage = (req, res, next) => {
 
-    const url = req.protocol + "://" + req.get("host");
+    const url = "https://" + req.get("host");
 
     let imagePath = req.body.imagePath;
 

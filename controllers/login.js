@@ -6,7 +6,7 @@ const Student = require("../models/student");
 
 exports.userLogIn = (req, res, next) => {
 
-    const url = req.protocol + "://" + req.get("host");
+    const url = "https://" + req.get("host");
     let imagePath = url + "/images/default.png";
 
     let fetchedUser;
@@ -34,20 +34,20 @@ exports.userLogIn = (req, res, next) => {
 
         switch(fetchedUser.userType) {
             case "0":
-                userType = "116567";
+                userType = "116567"; //Admin
                 break;
             case "1":
-                userType = "990196";
+                userType = "990196"; // Student
                 studentData = await Student.findOne({ _id : fetchedUser._id });
                 break;
             case "2":
-                userType = "426634";
+                userType = "426634"; //Professor
                 break;
             case "3":
-                userType = "334793";
+                userType = "334793"; //Event Manager
                 break;
             default:
-                userType = "186173";
+                userType = "186173"; //Unknown
                 break;
         }
 

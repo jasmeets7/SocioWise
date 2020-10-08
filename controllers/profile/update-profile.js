@@ -39,6 +39,12 @@ exports.updatePersonalInfo = (req, res, next) => {
 
     const id = req.body.id;
 
+    if (req.body.firstName === "" || req.body.lastName === "") {
+        return res.status(401).json({
+            message: "Please give a valid First Name and Last Name"
+        });
+    }
+
     const user = new User({
         _id: id,
         firstName: req.body.firstName,
