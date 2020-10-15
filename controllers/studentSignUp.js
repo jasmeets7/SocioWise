@@ -48,9 +48,10 @@ exports.createUser = (req, res, next) => {
                 nativeLanguage: "",
                 secondLanguage: ""
             },
-            userType: "1"
+            userType: "1",
+            active: true
         });
-        user.save().then(async result => {
+        user.save().then( result => {
             const student = new Student({
                 _id: result._id,
                 programName: req.body.programName
@@ -61,26 +62,26 @@ exports.createUser = (req, res, next) => {
             userDels = {
                 _id: result._id,
             };
-            await jwt.sign(
-                {
-                    user: userDels,
-                },
-                process.env.EMAIL_SECRET,
-                {
-                    expiresIn: '1d',
-                },
-                (err, emailToken) => {
-                    const url = process.env.CONFIRM_URL + `/${emailToken}`;
+            // await jwt.sign(
+            //     {
+            //         user: userDels,
+            //     },
+            //     process.env.EMAIL_SECRET,
+            //     {
+            //         expiresIn: '1d',
+            //     },
+            //     (err, emailToken) => {
+            //         const url = process.env.CONFIRM_URL + `/${emailToken}`;
         
-                    transporter.sendMail({
-                    to: result.email,
-                    subject: 'Confirm Email',
-                    html: `Please click this email to confirm your email: <a href="${url}">Click Here</a>`,
-                    });
+            //         transporter.sendMail({
+            //         to: result.email,
+            //         subject: 'Confirm Email',
+            //         html: `Please click this email to confirm your email: <a href="${url}">Click Here</a>`,
+            //         });
 
-                    console.log(err);
-                }
-            );
+            //         console.log(err);
+            //     }
+            // );
             res.status(201).json({
                 message: "User created!",
                 result: result

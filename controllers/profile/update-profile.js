@@ -7,14 +7,12 @@ exports.updateSchoolInfo = (req, res, next) => {
 
     const student = new Student({
         _id: id,
-        programName: req.body.ProgramName,
         semester: req.body.Semester,
         campus: req.body.Campus,
         internationalStudent: req.body.StudentStatus
     });
 
     const updatedData = {
-        programName: req.body.ProgramName,
         semester: req.body.Semester,
         campus: req.body.Campus,
         internationalStudent: req.body.StudentStatus

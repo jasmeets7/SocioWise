@@ -4,6 +4,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 const Student = require("../models/student");
 
+const Programs = require("../models/programs");
+
 exports.userLogIn = (req, res, next) => {
 
     const url = "https://" + req.get("host");
@@ -13,6 +15,10 @@ exports.userLogIn = (req, res, next) => {
     let userType;
 
     let studentData;
+
+    let programName;
+    let programID;
+    let collegeID;
 
     User.findOne({ email: req.body.email })
     .then(user => {
@@ -39,6 +45,9 @@ exports.userLogIn = (req, res, next) => {
             case "1":
                 userType = "990196"; // Student
                 studentData = await Student.findOne({ _id : fetchedUser._id });
+                programName = await Programs.findOne({_id: studentData.programName});
+                programID = studentData.programName;
+                studentData.programName = programName.programName;
                 break;
             case "2":
                 userType = "426634"; //Professor
@@ -62,7 +71,6 @@ exports.userLogIn = (req, res, next) => {
             firstName : fetchedUser.firstName,
             lastName : fetchedUser.lastName,
             email : fetchedUser.email,
-            collegeID : fetchedUser.collegeID,
             active: fetchedUser.active,
             uTV: userType,
             imagePath: fetchedUser.imagePath,
@@ -74,6 +82,8 @@ exports.userLogIn = (req, res, next) => {
             studentData: studentData
         }
 
+        collegeID = fetchedUser.collegeId;
+
         const token = jwt.sign(
             { email: fetchedUser.email, userId: fetchedUser._id },
             process.env.JWT_KEY,
@@ -83,7 +93,9 @@ exports.userLogIn = (req, res, next) => {
         res.status(200).json({
             token: token,
             expiresIn: 3600,
-            userDetails: userDetails
+            userDetails: userDetails,
+            programId: programID,
+            collegeID: collegeID
         });
 
     })
