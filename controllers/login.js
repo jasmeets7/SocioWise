@@ -5,6 +5,7 @@ const User = require("../models/user");
 const Student = require("../models/student");
 
 const Programs = require("../models/programs");
+const { env } = require("process");
 
 exports.userLogIn = (req, res, next) => {
 
@@ -39,24 +40,24 @@ exports.userLogIn = (req, res, next) => {
         }
 
         switch(fetchedUser.userType) {
-            case "0":
-                userType = "116567"; //Admin
+            case process.env.BASE_ADMIN:
+                userType = process.env.ADMIN;
                 break;
-            case "1":
-                userType = "990196"; // Student
+            case process.env.BASE_STUDENT:
+                userType =  process.env.STUDENT; 
                 studentData = await Student.findOne({ _id : fetchedUser._id });
                 programName = await Programs.findOne({_id: studentData.programName});
                 programID = studentData.programName;
                 studentData.programName = programName.programName;
                 break;
-            case "2":
-                userType = "426634"; //Professor
+            case process.env.BASE_PROFESSOR:
+                userType =  process.env.PROFESSOR;
                 break;
-            case "3":
-                userType = "334793"; //Event Manager
+            case process.env.BASE_EVENTMANAGER:
+                userType =  process.env.EVENT_MANAGER;
                 break;
             default:
-                userType = "186173"; //Unknown
+                userType =  process.env.UNKNOWN;
                 break;
         }
 
