@@ -78,6 +78,6 @@ router.post("/sendMessage", chatController.sendMessage);
 
 router.post("/getMessages", chatController.getMessages);
 
-router.put("/deleteMessage", chatController.deleteMessage);
+router.post("/deleteMessage", chatController.deleteMessage);
 
 module.exports = router;
