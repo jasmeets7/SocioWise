@@ -4,6 +4,7 @@ const Friends = require("../../models/friends");
 
 const User = require("../../models/user");
 const Student = require("../../models/student");
+const Room = require("../../models/room");
 
 exports.getList = (req, res, next) => {
 
@@ -53,8 +54,12 @@ exports.unfriendUser = (req, res, next) => {
 
     let userID = req.body.userId;
 
+    let roomID = req.body.roomID;
+
     Friends.updateOne({ _id: userID }, {$pull: { friendsList: profileID }}).then((result)=>{
         Friends.updateOne({ _id: profileID },  {$pull: { friendsList: userID }}).then((result)=>{
+            removeRoom(userID, profileID, roomID);
+            removeRoom(profileID, userID, roomID);
             res.status(201).json({
                 message: "Unfriended sucessfully!!",
                 profileID: profileID,
@@ -65,6 +70,26 @@ exports.unfriendUser = (req, res, next) => {
             res.status(400).json({
                 message: err
             });
+        });
+    });
+}
+
+let removeRoom = (userID, profileID, roomID) => {
+    Room.findOne({ _id: userID }).then((result)=>{
+        if (!result) {
+            //
+        } else {
+            Room.updateOne({ _id: userID }, {$pull: { roomsList: {roomID : roomID, userID: profileID} }}).then((result)=>{
+                console.log(result);
+            }).catch(err => {
+                res.status(400).json({
+                    message: err
+                });
+            });
+        }
+    }).catch(err => {
+        res.status(400).json({
+            message: err
         });
     });
 }

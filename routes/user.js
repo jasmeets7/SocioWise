@@ -28,6 +28,10 @@ const pendingRequestController = require("../controllers/friends/pending-request
 
 const friendsListController = require("../controllers/friends/friends-list");
 
+const roomsController = require("../controllers/messaging/rooms");
+
+const chatController = require("../controllers/messaging/chat");
+
 const router = express.Router();
 
 router.get("/collegeList", collegeController.getColleges);
@@ -67,5 +71,13 @@ router.put("/cancelRequest", pendingRequestController.cancelRequest);
 router.post("/getFriendsList", friendsListController.getList);
 
 router.put("/unfriendUser", friendsListController.unfriendUser);
+
+router.post("/getRoom", roomsController.getRoom);
+
+router.post("/sendMessage", chatController.sendMessage);
+
+router.post("/getMessages", chatController.getMessages);
+
+router.put("/deleteMessage", chatController.deleteMessage);
 
 module.exports = router;

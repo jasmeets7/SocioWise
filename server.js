@@ -48,3 +48,31 @@ const server = http.createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
 server.listen(port);
+const io = require('./socket').intit(server);
+io.on('connection', Socket => {
+  
+  Socket.on('join', function(data){
+
+    Socket.join(data.room);
+
+    Socket.broadcast.to(data.room).emit('new user joined', {user:data.user, message:'has joined this room.'});
+
+  });
+
+  Socket.on('leave', function(data){
+
+    Socket.broadcast.to(data.room).emit('left room', {user:data.user, message:'has left this room.'});
+
+    Socket.leave(data.room);
+
+  });
+
+  Socket.on('message',function(data){
+    io.in(data.room).emit('new message', {messageID: data.messageID, user:data.user, username:data.username, message:data.message, room: data.room, time:data.time});
+  });
+
+  Socket.on('delete',function(data){
+    io.in(data.room).emit('delete message', {messageID: data.messageID, user:data.user, username:data.username, message:data.message, room: data.room, time:data.time});
+  });
+
+});

@@ -1,4 +1,7 @@
 const Friends = require("../../models/friends");
+const Room = require("../../models/room");
+
+const mongoose = require("mongoose");
 
 exports.rejectRequest = (req, res, next) => {
 
@@ -32,6 +35,9 @@ exports.acceptRequest = (req, res, next) => {
         Friends.updateOne({ _id: userID }, {$push: { friendsList: profileID }}).then((result)=>{
             Friends.updateOne({ _id: profileID },  {$pull: { pendingRequest: userID }}).then((result)=>{
                 Friends.updateOne({ _id: profileID },  {$push: { friendsList: userID }}).then((result)=>{
+                    let roomID = new mongoose.Types.ObjectId().toString();
+                    makeRoom(userID, profileID, roomID);
+                    makeRoom(profileID, userID, roomID);
                     res.status(201).json({
                         message: "Friend request accepted sucessfully!!",
                         profileID: profileID,
@@ -44,6 +50,41 @@ exports.acceptRequest = (req, res, next) => {
                     });
                 });
             });
+        });
+    });
+}
+
+let makeRoom = (userID, profileID, roomID) => {
+    Room.findOne({ _id: userID }).then((result)=>{
+        if (!result) {
+            const room = new Room({
+                _id: userID,
+                roomsList: [
+                    {
+                        roomID : roomID,
+                        userID: profileID
+                    }
+                ]
+            });
+            room.save().then(result => {
+                console.log(result);
+            }).catch(err => {
+                res.status(400).json({
+                    message: err
+                });
+            });
+        } else {
+            Room.updateOne({ _id: userID }, {$push: { roomsList: {roomID : roomID, userID: profileID} }}).then((result)=>{
+                console.log(result);
+            }).catch(err => {
+                res.status(400).json({
+                    message: err
+                });
+            });
+        }
+    }).catch(err => {
+        res.status(400).json({
+            message: err
         });
     });
 }
