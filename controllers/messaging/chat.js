@@ -48,16 +48,8 @@ exports.sendMessage = (req, res, next) => {
         } else {
             Chat.updateOne({ _id: room }, {$push: { conversation: { messageID : messageID, user : user, username : username, message : message, time: time } }}).then((result)=>{
                 // console.log(result);
-            }).catch(err => {
-                res.status(400).json({
-                    message: err
-                });
             });
         }
-    }).catch(err => {
-        res.status(400).json({
-            message: err
-        });
     });
 
 }
@@ -88,10 +80,6 @@ exports.deleteMessage = (req, res, next) => {
 
     Chat.updateOne({ _id: room }, {$pull: { conversation: { messageID : messageID } }}).then((result)=>{
         
-    }).catch(err => {
-        res.status(400).json({
-            message: err
-        });
     });
 
 }

@@ -1,5 +1,6 @@
 const Friends = require("../../models/friends");
 const Room = require("../../models/room");
+const Chat = require("../../models/chat");
 
 const mongoose = require("mongoose");
 
@@ -67,24 +68,28 @@ let makeRoom = (userID, profileID, roomID) => {
                 ]
             });
             room.save().then(result => {
+                makeChat(roomID);
                 console.log(result);
-            }).catch(err => {
-                res.status(400).json({
-                    message: err
-                });
             });
         } else {
             Room.updateOne({ _id: userID }, {$push: { roomsList: {roomID : roomID, userID: profileID} }}).then((result)=>{
+                makeChat(roomID);
                 console.log(result);
-            }).catch(err => {
-                res.status(400).json({
-                    message: err
-                });
             });
         }
-    }).catch(err => {
-        res.status(400).json({
-            message: err
-        });
     });
+}
+
+let makeChat = (room) => {
+    Chat.findOne({ _id: room}).then((result)=>{
+        if (!result) {
+            const chat = new Chat({
+                _id: room,
+                conversation: []
+            });
+            chat.save().then(result => { });
+        }else {
+            //
+        }
+    })
 }

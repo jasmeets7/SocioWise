@@ -11,6 +11,14 @@ exports.getProfiles = async (req, res, next) => {
     const url = "https://" + req.get("host");
     let userArray  = await Friends.findOne({ _id: req.body.userId });
 
+    if (userArray == null) {
+        userArray = {
+            pendingRequest: [],
+            recievedRequest: [],
+            friendsList: []
+        };
+    }
+
     User.find({collegeId: req.body.cid, userType: "1"}).where({$and: [{_id:{$ne : req.body.userId}}, {_id : {$nin : userArray.pendingRequest}}, {_id : {$nin : userArray.recievedRequest}}, {_id : {$nin : userArray.friendsList}}]}).then(async result => {
         if (!result) {
             return res.status(401).json({
